@@ -1,0 +1,28 @@
+{
+  "name": "storeino-template-core",
+  "version": "1.0.0",
+  "description": "Is the core for development storeino themes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Abdelali-ErRafik/storeino-template-core.git"
+  },
+  "keywords": [
+    "core",
+    "template",
+    "storeino",
+    "theme",
+    "storeino-theme",
+    "template-core"
+  ],
+  "author": "storeino",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Abdelali-ErRafik/storeino-template-core/issues"
+  },
+  "homepage": "https://github.com/Abdelali-ErRafik/storeino-template-core#readme"
+}

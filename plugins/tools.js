@@ -1,4 +1,4 @@
-export default function({ store }, inject){
+export default function({ store }, inject) {
     const tools = {};
     tools.hexToRgb = (hex) => {
         var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -8,27 +8,27 @@ export default function({ store }, inject){
             b: parseInt(result[3], 16)
         } : { r: 0, g: 0, b: 0 };
     }
-    tools.copy = (value)=> {
-        const type = typeof(value);
-        if(type == 'number') return value * 1;
-        if(type == 'string') return value + '';
-        if(value === null || value === undefined) return undefined;
-        if(type == 'object') return JSON.parse(JSON.stringify(value));
+    tools.copy = (value) => {
+        const type = typeof (value);
+        if (type == 'number') return value * 1;
+        if (type == 'string') return value + '';
+        if (value === null || value === undefined) return undefined;
+        if (type == 'object') return JSON.parse(JSON.stringify(value));
         return value;
     }
-    tools.cookieToObject = (cookie)=> {
-        if(!cookie) return {};
+    tools.cookieToObject = (cookie) => {
+        if (!cookie) return {};
         const cookies = cookie.split(';');
         const result = {};
-        for(let i = 0; i < cookies.length; i++){
+        for (let i = 0; i < cookies.length; i++) {
             const key = cookies[i].split('=')[0].trim();
-            const value = cookies[i].split('=')[1]?cookies[i].split('=')[1].trim() : '';
+            const value = cookies[i].split('=')[1] ? cookies[i].split('=')[1].trim() : '';
             result[key] = value;
         }
         return result;
     }
     tools.call = (name, data = {}) => {
-        if(!process.server){
+        if (!process.server) {
             if (!window.events) window.events = {}
             if (!window.events[name]) window.events[name] = new CustomEvent(name);
             window.events[name].data = data
@@ -41,16 +41,16 @@ export default function({ store }, inject){
         result.quantity = item.quantity;
         result.price = item.price;
         result.parents = [];
-        if(item.variant){ result.variant = { _id: item.variant._id }; }
-        if(item.upsell && item.upsell.product){
+        if (item.variant) { result.variant = { _id: item.variant._id }; }
+        if (item.upsell && item.upsell.product) {
             result.parents.push(item.upsell.product._id);
             result.upsell = (({ _id, name }) => ({ _id, name }))(item.upsell);
             const discount = (({ code, type, value }) => ({ code, type, value }))(item.upsell.discount || {});
-            result.upsell = { ...result.upsell, ...discount};
+            result.upsell = { ...result.upsell, ...discount };
         }
         return result;
     }
-    tools.reformWishlistItem = (item) =>{
+    tools.reformWishlistItem = (item) => {
         return { _id: item._id };
     }
     tools.setCart = (cart) => {
@@ -62,7 +62,7 @@ export default function({ store }, inject){
         document.cookie = `STOREINO-WISHLIST=${wishString};path=/`;
     }
     tools.toast = (message, type = 'success') => {
-        if(!process.server){
+        if (!process.server) {
             const toast = document.createElement('div');
             const svgIcon = document.createElement('div');
             const toastMessage = document.createElement('div');
@@ -98,28 +98,28 @@ export default function({ store }, inject){
             }, 3000);
         }
     }
-    tools.tokenDecode =(token)=> {
+    tools.tokenDecode = (token) => {
         if (/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]*$/.test(token) && token.split(".").length > 1) {
-        let data = token.split(".")[1];
-        let buff = new Buffer.from(data, 'base64');
-        let text = buff.toString('ascii');
-        return JSON.parse(text)
+            let data = token.split(".")[1];
+            let buff = new Buffer.from(data, 'base64');
+            let text = buff.toString('ascii');
+            return JSON.parse(text)
         } else return null;
     }
-    tools.tokenDecode = (token)=> {
+    tools.tokenDecode = (token) => {
         if (/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]*$/.test(token) && token.split(".").length > 1) {
-        let data = token.split(".")[1];
-        let buff = new Buffer.from(data, 'base64');
-        let text = buff.toString('ascii');
-        return JSON.parse(text)
+            let data = token.split(".")[1];
+            let buff = new Buffer.from(data, 'base64');
+            let text = buff.toString('ascii');
+            return JSON.parse(text)
         } else return null;
     }
-    tools.pushState =(path, params, query)=> {
+    tools.pushState = (path, params, query) => {
         if (typeof params == 'object') {
-        params = params.join('+');
-        let qs = serializeQuery(query);
-        qs = qs == '' ? '' : '?' + qs;
-        return path + params + qs;
+            params = params.join('+');
+            let qs = serializeQuery(query);
+            qs = qs == '' ? '' : '?' + qs;
+            return path + params + qs;
         }
     }
     inject('tools', tools);
