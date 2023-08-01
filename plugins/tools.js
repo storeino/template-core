@@ -1,4 +1,4 @@
-export default function({ store }, inject) {
+export default function ({ store }, inject) {
     const tools = {};
     tools.hexToRgb = (hex) => {
         var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);

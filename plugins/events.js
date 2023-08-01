@@ -1,4 +1,4 @@
-export default function({ app, store, router, $tools }, inject) {
+export default function ({ app, store, router, $tools }, inject) {
     if (!process.server) {
         window.addEventListener('TO_CHECKOUT', (e) => {
             window.location.href = '/checkout2'
@@ -18,23 +18,15 @@ export default function({ app, store, router, $tools }, inject) {
             }
             snapPageView();
             tiktokPageView();
-            twitterPageView();
             if (e.data && e.data._id) {
-                snapViewContent({ item_ids: [e.data._id] });
+                snapViewContent({ item_ids: [e.data._id], currency: store.state.currency.code || "USD" });
                 tiktokViewContent({
                     content_id: e.data._id,
                     quantity: 1,
                     price: e.data.price.salePrice,
                     value: e.data.price.salePrice,
                     currency: store.state.currency.code || "USD"
-                });
-                twitterViewContent({
-                    content_ids: [e.data._id],
-                    content_type: 'product',
-                    content_name: e.data.name,
-                    value: e.data.price.salePrice,
-                    currency: store.state.currency.code || "USD"
-                });
+                })
             }
         });
         window.addEventListener('ADD_TO_CART', (e) => {
@@ -42,6 +34,14 @@ export default function({ app, store, router, $tools }, inject) {
             let exists = null;
             if (item.variant) exists = store.state.cart.find(i => i._id === item._id && i.variant && i.variant._id === item.variant._id);
             else exists = store.state.cart.find(i => i._id === item._id);
+            if (exists) {
+                item.parents = [...new Set([...exists.parents, ...item.parents])];
+                exists.quantity = item.quantity;
+            } else {
+                store.state.cart.push(item);
+            }
+            $tools.setCart(store.state.cart);
+            $tools.call('ADDED_TO_CART');
             snapAddToCart({
                 item_ids: [item._id],
                 price: item.price,
@@ -54,21 +54,6 @@ export default function({ app, store, router, $tools }, inject) {
                 value: item.price * item.quantity,
                 currency: store.state.currency.code || "USD"
             });
-            twitterAddToCart({
-                content_ids: [item._id],
-                content_type: 'product',
-                value: item.price * item.quantity,
-                currency: store.state.currency.code || "USD"
-            });
-            window.linkedInEvent('add_to_cart');
-            if (exists) {
-                item.parents = [...new Set([...exists.parents, ...item.parents])];
-                exists.quantity = item.quantity;
-            } else {
-                store.state.cart.push(item);
-            }
-            $tools.setCart(store.state.cart);
-            $tools.call('ADDED_TO_CART');
         });
         window.addEventListener('REMOVE_FROM_CART', (e) => {
             const item = $tools.reformCartItem(e.data);
@@ -90,13 +75,9 @@ export default function({ app, store, router, $tools }, inject) {
             let exists = store.state.wishlist.find(i => i._id === item._id);
             if (!exists) store.state.wishlist.push(item);
             $tools.setWishlist(store.state.wishlist);
+            fbAddToWishlist({ id: item._id, content_name: item.name, content_ids: [item._id], content_type: 'product' });
             snapAddToWishlist({ item_ids: [item._id] });
             tiktokAddToWishlist({ content_id: item._id, price: item.price, currency: store.state.currency.code || "USD" });
-            twitterAddToWishlist({
-                content_ids: [item._id],
-                content_type: 'product',
-                currency: store.state.currency.code || "USD"
-            });
         });
         window.addEventListener('REMOVE_FROM_WISHLIST', (e) => {
             const item = $tools.reformWishlistItem(e.data);

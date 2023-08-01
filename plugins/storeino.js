@@ -1,4 +1,4 @@
-export default async function({ $http, store, app, route }, inject) {
+export default async function ({ $http, store, app, route }, inject) {
     const storeino = {};
     const gets = ['products', 'collections', 'pages'];
     const searches = ['products', 'collections', 'categories', 'upsells', 'pages', 'brands', 'reviews', 'apps'];
@@ -54,7 +54,6 @@ export default async function({ $http, store, app, route }, inject) {
             if (params) { for (const key in params) { query[key] = params[key]; } }
             if (localStorage.getItem('__external_id')) query['user_external_id'] = localStorage.getItem('__external_id');
             if (localStorage.getItem('__fbc')) query['user_fbc'] = localStorage.getItem('__fbc');
-
             if (data.currency) {
                 let valueCur = 1;
                 if (store.state.settings['facebook_currency'] && store.state.settings.facebook_currency[data.currency] && store.state.settings.facebook_currency[data.currency] != 0) {
