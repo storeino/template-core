@@ -1,6 +1,6 @@
 {
   "name": "@storeino/template-core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Is the core for development storeino themes",
   "main": "index.js",
   "scripts": {
