@@ -4,7 +4,7 @@ This is theme core for  build storeino themes
 
 ## Themes documentation
 
-Now how you can build  [Storeino Themes](https://storeino.dev). 
+You can build Storeino Themes by using our [Documentation](https://storeino.dev). 
 
 ## Getting started
 
