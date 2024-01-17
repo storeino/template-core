@@ -41,6 +41,9 @@ export default function ({ store }, inject) {
         result.quantity = item.quantity;
         result.price = item.price;
         result.parents = [];
+        if (item.booking) {
+            result.booking =  item.booking
+         }
         if (item.variant) { result.variant = { _id: item.variant._id }; }
         if (item.upsell && item.upsell.product) {
             result.parents.push(item.upsell.product._id);
@@ -61,6 +64,11 @@ export default function ({ store }, inject) {
         const wishString = JSON.stringify(wishlist);
         document.cookie = `STOREINO-WISHLIST=${wishString};path=/`;
     }
+    tools.setToCookies = (data,key) => {
+        const dataString = JSON.stringify(data);
+        document.cookie = `STOREINO-${key}=${dataString};path=/`;
+    }
+
     tools.toast = (message, type = 'success') => {
         if (!process.server) {
             const toast = document.createElement('div');
