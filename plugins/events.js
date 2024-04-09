@@ -54,6 +54,11 @@ export default function ({ app, store, router, $tools }, inject) {
                 value: item.price * item.quantity,
                 currency: store.state.currency.code || "USD"
             });
+            if (store.state.settings.analitycs_shere &&
+                store.state.settings.analitycs_shere[0] &&
+                store.state.settings.analitycs_shere[0]['data-website-id'] && window.umami) {
+                window.umami.track('ADD_TO_CART',{ name: item.name, id: item._id })
+            }
         });
         window.addEventListener('REMOVE_FROM_CART', (e) => {
             const item = $tools.reformCartItem(e.data);
@@ -78,6 +83,11 @@ export default function ({ app, store, router, $tools }, inject) {
             fbAddToWishlist({ id: item._id, content_name: item.name, content_ids: [item._id], content_type: 'product' });
             snapAddToWishlist({ item_ids: [item._id] });
             tiktokAddToWishlist({ content_id: item._id, price: item.price, currency: store.state.currency.code || "USD" });
+            if (store.state.settings.analitycs_shere &&
+                store.state.settings.analitycs_shere[0] &&
+                store.state.settings.analitycs_shere[0]['data-website-id'] && window.umami) {
+                window.umami.track('ADD_TO_WISHLIST',{ name: item.name, id: item._id })
+            }
         });
         window.addEventListener('REMOVE_FROM_WISHLIST', (e) => {
             const item = $tools.reformWishlistItem(e.data);
