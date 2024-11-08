@@ -8,10 +8,9 @@ export default async function ({ $axios, $http, route, $tools, $storeino, store,
       store.state.IP = req.headers.ip
     }
     try {
-      if (req.body && req.body.preview) {
+      if (req.query && req.query.preview) {
         store.state.isPreview = true;
-        const body = { data: JSON.parse(req.body.preview.data), schema: JSON.parse(req.body.preview.schema) };
-        response = await $http.post('/settings/current', body);
+        response = await $http.get('/settings/current?preview=true');
       } else {
         response = await $http.get('/settings/current');
       }
